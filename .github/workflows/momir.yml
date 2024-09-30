@@ -23,13 +23,26 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
 
-    - name: Check if version changed
-      uses: radumarias/action-check-version-changed-rust@v1
+    
+  check_version:
+    name: Check Version
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check_version.outputs.changed }}
+      version: ${{ steps.check_version.outputs.version }}
+      prev_version: ${{ steps.check_version.outputs.prev_version }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: check_version
+        uses: radumarias/action-check-version-changed-rust@v1
+
 
   create-release:
     name: Create Release
     runs-on: ubuntu-latest
-    needs: build
+    needs: check_version
     if: steps.check_version.outputs.changed = 'true'
     steps:
       - uses: actions/checkout@v4
