@@ -54,7 +54,7 @@ jobs:
 
   upload-assets:
     name: Upload to Release
-    needs: create-release
+    needs: [ create-release, check_version ]
     strategy:
       matrix:
         include:
@@ -75,4 +75,5 @@ jobs:
           target: ${{ matrix.target }}
           tar: unix
           zip: windows
+          ref: refs/tags/${{ needs.check_version.outputs.version }}
           token: ${{ secrets.GITHUB_TOKEN }}
