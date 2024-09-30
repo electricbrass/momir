@@ -2,6 +2,7 @@ name: Momir CI + Release
 
 permissions:
   contents: write
+  actions: write
 
 on:
   push:
